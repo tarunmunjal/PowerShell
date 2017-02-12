@@ -90,6 +90,10 @@ Function New-ControlObject
             $FormObject.BackgroundImage = $BitmapFromStream
             $FormObject.BackgroundImageLayout = $BackGroundImageStyle
         }
+        if($ObjectType -eq 'MaskedTextBox')
+        {
+            $FormObject.PasswordChar = '*'
+        }
     }
     End
     {
@@ -147,6 +151,24 @@ Function New-CustomForm
         [void] $Form.ShowDialog()
     }
 }
+
+$Base64PNG = [convert]::ToBase64String((get-content 'ImageFilePathHere' -encoding byte))
+$Label = New-ControlObject -ObjectType 'Label' -BackColor 'Purple' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Label Text' -HorizontalLocation 10 -VerticalLocation 20 -HorizontalSize 200 -VerticalSize 20
+$Button = New-ControlObject -ObjectType 'Button' -BackColor 'lightgray' -ForeColor 'Yellow' -Font 'Comic Sans MS' -FontSize 8 -Text 'Button Text' -HorizontalLocation 220 -VerticalLocation 20 -HorizontalSize 200 -VerticalSize 20
+$TextBox = New-ControlObject -ObjectType 'TextBox' -BackColor 'lightgray' -ForeColor 'Green' -Font 'Times New Roman' -FontSize 8 -Text 'Text Box' -HorizontalLocation 10 -VerticalLocation 50 -HorizontalSize 200 -VerticalSize 20 
+$ComboBox = New-ControlObject -ObjectType 'ComboBox' -BackColor '#95a5a6' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Combo Box' -HorizontalLocation 220 -VerticalLocation 50 -HorizontalSize 200 -VerticalSize 20
+$RichTextBox = New-ControlObject -ObjectType 'RichTextBox' -BackColor '#50B9B7' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Rich Text Box' -HorizontalLocation 10 -VerticalLocation 85 -HorizontalSize 200 -VerticalSize 20
+$CheckBox = New-ControlObject -ObjectType 'CheckBox' -BackColor '#3B8622' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Check Box' -HorizontalLocation 220 -VerticalLocation 85 -HorizontalSize 200 -VerticalSize 20
+$CheckedListBox = New-ControlObject -ObjectType 'CheckedListBox' -BackColor '#DBE641' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'CheckedListBox' -HorizontalLocation 10 -VerticalLocation 120 -HorizontalSize 200 -VerticalSize 40
+$ListBox = New-ControlObject -ObjectType 'ListBox' -BackColor '#D7B1A9' -ForeColor 'White' -Font 'Times New Roman' -FontSize 8 -Text 'ListBox' -HorizontalLocation 220 -VerticalLocation 120 -HorizontalSize 200 -VerticalSize 40
+$MaskedTextBox = New-ControlObject -ObjectType 'MaskedTextBox' -BackColor '#95a5a6' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -HorizontalLocation 10 -VerticalLocation 200 -HorizontalSize 200 -VerticalSize 20
+$ComboBox.Items.add("Combo Box Item 1") | Out-Null
+$ComboBox.Items.add("Combo Box Item 1") | Out-Null
+$CheckedListBox.Items.add("Checked List Box Item 1") | Out-Null
+$CheckedListBox.Items.add("Checked List Box Item 2") | Out-Null
+$ListBox.Items.add("List Box Item 1") | Out-Null
+$ListBox.Items.add("List Box Item 1") | Out-Null
+$ListBox ,$CheckedListBox , $CheckBox ,$RichTextBox, $ComboBox ,$TextBox ,$Button , $Label, $MaskedTextBox | New-CustomForm -FormHeight 800 -FormWidth 600 -FormBackColor '#552a20' -FormForeColor 'red'
 $TarunBase64 = @'
 /9j/4AAQSkZJRgABAQAAAQABAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2ODApLCBxdWFsaXR5ID0gOTAK/9sAQwADAgIDAgIDAwMDBAMDBAUIBQUEBAUKBwcGCAwKDAwLCgsLDQ4SEA0OEQ4LCxAWEBETFBUVFQwPFxgWFBgSFBUU/9sAQwEDBAQFBAUJBQUJFA0L
 DRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU/8AAEQgBkAGQAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBka
@@ -314,23 +336,5 @@ Bx3AHStzStHitbcsiDB6ECvNUZSZ01MRqrHjWh+FvEnhpVkg1BnjPWKQZB/wrt9P8Tauzi3lscZHzSq/
 jB7mFSUY6HC6XoIiiC7DmtWPw3JIOUIX3rvvD/hC+1m6S202xmvrhjjEMe7H416Zpf7L3jnVABLa2unxnnNzPg/kATWipzb0RxyqqLuz5pv9EjtThioz0xWHqOiIp3EcD3r6m+Jf7KN74P8ACF5reoa/bf6NHv8AKjiPJ9ASf6V8cazrt8kjxoMKucN61UqUouw/ap7GkNOQnpgVTn06PB5APvXF3nin
 WYnIQjHXpWc/iDW7tj84/wC+aFTkwdZJHX3dvHGxUkZ9RWVeFI4yFPzDnNYLwazeLzKwJPYVE+iayxyZWIx3rVUvMxdZC3E6MSSeazZipY4NNudF1OMnPNUWtLyIkOefpW0adkc7qofOMHhR9apTSZ4FWUtrh/vHj6UxbFi5U8g961RHNzGdLLsFVZJdx+bipLxDbytGR34qux3EcdaoVkf/2Q==
 '@
-#$Base64PNG = [convert]::ToBase64String((get-content 'ImageFilePathHere' -encoding byte))
-$Label = New-ControlObject -ObjectType 'Label' -BackColor 'Purple' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Label Text' -HorizontalLocation 10 -VerticalLocation 20 -HorizontalSize 200 -VerticalSize 20
-$Button = New-ControlObject -ObjectType 'Button' -BackColor 'lightgray' -ForeColor 'Yellow' -Font 'Comic Sans MS' -FontSize 8 -Text 'Button Text' -HorizontalLocation 220 -VerticalLocation 20 -HorizontalSize 200 -VerticalSize 20
-$TextBox = New-ControlObject -ObjectType 'TextBox' -BackColor 'lightgray' -ForeColor 'Green' -Font 'Times New Roman' -FontSize 8 -Text 'Text Box' -HorizontalLocation 10 -VerticalLocation 50 -HorizontalSize 200 -VerticalSize 20 
-$ComboBox = New-ControlObject -ObjectType 'ComboBox' -BackColor '#95a5a6' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Combo Box' -HorizontalLocation 220 -VerticalLocation 50 -HorizontalSize 200 -VerticalSize 20
-$RichTextBox = New-ControlObject -ObjectType 'RichTextBox' -BackColor '#50B9B7' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Rich Text Box' -HorizontalLocation 10 -VerticalLocation 85 -HorizontalSize 200 -VerticalSize 20
-$CheckBox = New-ControlObject -ObjectType 'CheckBox' -BackColor '#3B8622' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'Check Box' -HorizontalLocation 220 -VerticalLocation 85 -HorizontalSize 200 -VerticalSize 20
-$CheckedListBox = New-ControlObject -ObjectType 'CheckedListBox' -BackColor '#DBE641' -ForeColor 'Black' -Font 'Times New Roman' -FontSize 8 -Text 'CheckedListBox' -HorizontalLocation 10 -VerticalLocation 120 -HorizontalSize 200 -VerticalSize 40
-$ListBox = New-ControlObject -ObjectType 'ListBox' -BackColor '#D7B1A9' -ForeColor 'White' -Font 'Times New Roman' -FontSize 8 -Text 'ListBox' -HorizontalLocation 220 -VerticalLocation 120 -HorizontalSize 200 -VerticalSize 40
-$ComboBox.Items.add("Combo Box Item 1") | Out-Null
-$ComboBox.Items.add("Combo Box Item 1") | Out-Null
-$CheckedListBox.Items.add("Checked List Box Item 1") | Out-Null
-$CheckedListBox.Items.add("Checked List Box Item 2") | Out-Null
-$ListBox.Items.add("List Box Item 1") | Out-Null
-$ListBox.Items.add("List Box Item 1") | Out-Null
-
-#$ListBox ,$CheckedListBox , $CheckBox ,$RichTextBox, $ComboBox ,$TextBox ,$Button , $Label | New-CustomForm -FormHeight 800 -FormWidth 600 -FormBackColor '#552a20' -FormForeColor 'red'
-
-$ListBox ,$CheckedListBox , $CheckBox ,$RichTextBox, $ComboBox ,$TextBox ,$Button , $Label | New-CustomForm -FormHeight 800 -FormWidth 800 -FormBackColor '#552a20' -FormForeColor 'red' -ImageInBase64 $TarunBase64
+#$ListBox ,$CheckedListBox , $CheckBox ,$RichTextBox, $ComboBox ,$TextBox ,$Button , $Label | New-CustomForm -FormHeight 800 -FormWidth 800 -FormBackColor '#552a20' -FormForeColor 'red' -ImageInBase64 $TarunBase64
 #>
