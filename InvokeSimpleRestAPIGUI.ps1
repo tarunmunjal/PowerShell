@@ -1,6 +1,7 @@
 ﻿Import-Module $psscriptroot\Create-GuiForm.psm1 -Force
 ## Create Form Objects
 ## UserName
+
 $UserNameLabel = New-ControlObject -ObjectType 'Label' -Font 'Segoe UI' -FontSize 12 -Text 'Username :' -HorizontalLocation 10 -VerticalLocation 20 -HorizontalSize 100 -VerticalSize 25
 $UserNameTextBox = New-ControlObject -ObjectType 'TextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 150 -VerticalLocation 20 -HorizontalSize 200 -VerticalSize 25 
 ## Password
@@ -45,21 +46,22 @@ $InvokeRequestButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -
 $ResponseRichTextBox = New-ControlObject -ObjectType 'RichTextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 40 -VerticalLocation 350 -HorizontalSize 700 -VerticalSize 400
 $ResponseRichTextBox.ReadOnly = $true
 ## Setting script wide variables and defining control events
-$RequestHeaders = @{}
-$BodyParameters = @{}
+$Script:RequestHeaders = @{}
+$Script:BodyParameters = @{}
 $RTOriginalColor = $ResponseRichTextBox.ForeColor
 $ResetValuesButton.Add_click({
-$RequestHeaders = @{}
-$BodyParameters = @{}
-$UserNameTextBox.Text = ""
-$PasswordTextBox.Text = ""
-$BodyKeyTextBox.Text = ""
-$BodyValueTextBox.Text = ""
-$HeaderKeyTextBox.Text = ""
-$MethodComboBox.SelectedIndex = 0
-$HeaderValueTextBox.Text = ""
-$ParametersRichTextBox.Text = ""
-$ResponseRichTextBox.Text = ""
+    $Script:RequestHeaders = @{}
+    $Script:BodyParameters = @{}
+    $UserNameTextBox.Text = ""
+    $PasswordTextBox.Text = ""
+    $BodyKeyTextBox.Text = ""
+    $BodyValueTextBox.Text = ""
+    $HeaderKeyTextBox.Text = ""
+    $MethodComboBox.SelectedIndex = 0
+    $HeaderValueTextBox.Text = ""
+    $ParametersRichTextBox.Text = ""
+    $ResponseRichTextBox.Text = ""
+    $ResponseRichTextBox.text = $BodyParameters | Out-String
 })
 $AddHeadersButton.Add_Click({
     if($HeaderKeyTextBox.Text)
@@ -80,13 +82,13 @@ $AddHeadersButton.Add_Click({
 $AddKeyValuePairButton.Add_click({
     try
     {
-        if($BodyParameters.count -eq 0)
+        if($Script:BodyParameters.count -eq 0)
         {
             $ResponseRichTextBox.text += "Rest Parameters tend to be case sensitive please make sure to follow the documentation."
         }
-        if($BodyKeyTextBox.text)
+        if($Script:BodyKeyTextBox.text)
         {
-            $BodyParameters.add(($BodyKeyTextBox.Text).ToString(),$BodyValueTextBox.Text.ToString())
+            $Script:BodyParameters.add(($BodyKeyTextBox.Text).ToString(),$BodyValueTextBox.Text.ToString())
         }
         else
         {
@@ -105,7 +107,7 @@ $AddKeyValuePairButton.Add_click({
         $ResponseRichTextBox.ScrollToCaret()
         return
     }
-    $ParametersRichTextBox.Text = $BodyParameters | convertto-json
+    $ParametersRichTextBox.Text = $Script:BodyParameters | convertto-json
 })
 $InvokeRequestButton.Add_click({    
     if(-not $UrlTextBox.text)
@@ -118,10 +120,10 @@ $InvokeRequestButton.Add_click({
     }
     if($UserNameTextBox.text -and $PasswordTextBox.text)
     {
-        if(!($RequestHeaders.Keys -eq 'Authorization'))
+        if(!($Script:RequestHeaders.Keys -eq 'Authorization'))
         {
             $EncodedCredntials = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("$($UserNameTextBox.Text):$($PasswordTextBox.Text)")) 
-            $RequestHeaders.add('Authorization',"Basic $EncodedCredntials")
+            $Script:RequestHeaders.add('Authorization',"Basic $EncodedCredntials")
         }
     }
     else
@@ -133,13 +135,13 @@ $InvokeRequestButton.Add_click({
     }
     try
     {
-        if($BodyParameters.Count -ne 0)
+        if($Script:BodyParameters.Count -ne 0)
         {
-            $ResponseRichTextBox.text = (Invoke-RestMethod -Method ($MethodComboBox.SelectedItem).ToString() -Uri ($UrlTextBox.Text).ToString() -Headers $RequestHeaders -Body ($BodyParameters | ConvertTo-Json) | ConvertTo-Json)
+            $ResponseRichTextBox.text = (Invoke-RestMethod -Method ($MethodComboBox.SelectedItem).ToString() -Uri ($UrlTextBox.Text).ToString() -Headers $Script:RequestHeaders -Body ($Script:BodyParameters | ConvertTo-Json) | ConvertTo-Json)
         }
         else
         {
-            $ResponseRichTextBox.text = (Invoke-RestMethod -Method ($MethodComboBox.SelectedItem).ToString() -Uri ($UrlTextBox.Text).ToString() -Headers $RequestHeaders | ConvertTo-Json)
+            $ResponseRichTextBox.text = (Invoke-RestMethod -Method ($MethodComboBox.SelectedItem).ToString() -Uri ($UrlTextBox.Text).ToString() -Headers $Script:RequestHeaders | ConvertTo-Json)
         }
     }
     catch
