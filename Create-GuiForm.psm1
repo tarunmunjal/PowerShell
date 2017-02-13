@@ -84,7 +84,14 @@ Function New-ControlObject
         {
             $FormObject.font = $FontObject
         }
-        $FormObject.Visible = $Visible
+        try
+        {
+            $FormObject.Visible = $Visible
+        }
+        catch
+        {
+            Write-Warning "$ObjectType doesn't have a property Visible."
+        }
         if($ImageInBase64)
         {
             $FormObject.BackgroundImage = $BitmapFromStream
@@ -112,6 +119,7 @@ Function New-CustomForm
     [string]$FormForeColor,
 	[string]$FormBorderStyle,
     [string]$ImageInBase64,
+    [string]$FormTitle,
     [string]$BackGroundImageStyle = 'Stretch'
     )
     Begin{
@@ -139,6 +147,7 @@ Function New-CustomForm
             $Form.BackgroundImage = $BitmapFromStream
             $Form.BackgroundImageLayout = $BackGroundImageStyle
         }
+        $Form.Text = $FormTitle
     }
     Process
     {
