@@ -17,14 +17,14 @@ $MethodComboBox.Items.add('Delete') | Out-Null
 $MethodComboBox.Items.add('Patch') | Out-Null
 $MethodComboBox.SelectedIndex = 0
 ##
-$ResetValuesButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 260 -VerticalLocation 100 -HorizontalSize 100 -VerticalSize 30 -Text "Reset Values"
+$ResetValuesButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 260 -VerticalLocation 100 -HorizontalSize 110 -VerticalSize 30 -Text "Reset Values"
 ## Body Parameter 
 $BodyKeyLabel = New-ControlObject -ObjectType 'Label' -Font 'Segoe UI' -FontSize 12 -Text 'Body Key :' -HorizontalLocation 10 -VerticalLocation 140 -HorizontalSize 120 -VerticalSize 25
 $BodyKeyTextBox = New-ControlObject -ObjectType 'TextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 150 -VerticalLocation 140 -HorizontalSize 200 -VerticalSize 25
 $BodyValueLabel = New-ControlObject -ObjectType 'Label' -Font 'Segoe UI' -FontSize 12 -Text 'Body Value :' -HorizontalLocation 10 -VerticalLocation 180 -HorizontalSize 120 -VerticalSize 25
 $BodyValueTextBox = New-ControlObject -ObjectType 'TextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 150 -VerticalLocation 180 -HorizontalSize 200 -VerticalSize 25 
 ## Button
-$AddKeyValuePairButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 400 -VerticalLocation 180 -HorizontalSize 180 -VerticalSize 50 -Text "Add Parmeters to Body"
+$AddKeyValuePairButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 400 -VerticalLocation 180 -HorizontalSize 160 -VerticalSize 50 -Text "Add Parmeters to Body"
 ## Read only rich Text box to show list parameters added
 $ParametersRichTextBox = New-ControlObject -ObjectType 'RichTextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 400 -VerticalLocation 20 -HorizontalSize 350 -VerticalSize 150
 $ParametersRichTextBox.ReadOnly = $true
@@ -33,15 +33,15 @@ $ParametersRichTextBox.BackColor = '#2ECCFA'
 $HeaderKeyLabel = New-ControlObject -ObjectType 'Label' -Font 'Segoe UI' -FontSize 12 -Text 'Header Key :' -HorizontalLocation 10 -VerticalLocation 220 -HorizontalSize 120 -VerticalSize 25
 $HeaderKeyTextBox = New-ControlObject -ObjectType 'TextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 150 -VerticalLocation 220 -HorizontalSize 200 -VerticalSize 25 -Text 'Content-Type'
 $HeaderValueLabel = New-ControlObject -ObjectType 'Label' -Font 'Segoe UI' -FontSize 12 -Text 'Header Value :' -HorizontalLocation 10 -VerticalLocation 260 -HorizontalSize 120 -VerticalSize 25
-$HeaderValueTextBox = New-ControlObject -ObjectType 'TextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 150 -VerticalLocation 260 -HorizontalSize 200 -VerticalSize 25 -Text 'Application/Json'
-$AddHeadersButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 600 -VerticalLocation 180 -HorizontalSize 150 -VerticalSize 50 -Text "Add Headers"
+$HeaderValueTextBox = New-ControlObject -ObjectType 'TextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 150 -VerticalLocation 260 -HorizontalSize 180 -VerticalSize 25 -Text 'Application/Json'
+$AddHeadersButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 590 -VerticalLocation 240 -HorizontalSize 160 -VerticalSize 50 -Text "Add Headers"
 ## Url
 $UrlLabel = New-ControlObject -ObjectType 'Label' -Font 'Segoe UI' -FontSize 12 -Text 'Url :' -HorizontalLocation 10 -VerticalLocation 300 -HorizontalSize 100 -VerticalSize 25
 $UrlTextBox = New-ControlObject -ObjectType 'TextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 150 -VerticalLocation 300 -HorizontalSize 600 -VerticalSize 25
 ## Data manipulation checkbox
-$RawDataCheckBox = New-ControlObject -ObjectType 'CheckBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 600 -VerticalLocation 250 -HorizontalSize 200 -VerticalSize 25 -Text "Raw Data" -Visible $false
+$RemoveBodyParameterButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 590 -VerticalLocation 180 -HorizontalSize 160 -VerticalSize 50 -Text "Remove Parameter from Body" 
 ## Invoke Request Buttons
-$InvokeRequestButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 400 -VerticalLocation 240 -HorizontalSize 180 -VerticalSize 50 -Text "InvokeRequest"
+$InvokeRequestButton = New-ControlObject -ObjectType 'Button' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 400 -VerticalLocation 240 -HorizontalSize 160 -VerticalSize 50 -Text "InvokeRequest"
 ## Read only Response Rich Text box
 $ResponseRichTextBox = New-ControlObject -ObjectType 'RichTextBox' -Font 'Segoe UI' -FontSize 12 -HorizontalLocation 40 -VerticalLocation 350 -HorizontalSize 700 -VerticalSize 400
 $ResponseRichTextBox.ReadOnly = $true
@@ -49,6 +49,11 @@ $ResponseRichTextBox.ReadOnly = $true
 $Script:RequestHeaders = @{}
 $Script:BodyParameters = @{}
 $RTOriginalColor = $ResponseRichTextBox.ForeColor
+#$ResponseRichTextBox.BackColor = '#4169e1'
+$RemoveBodyParameterButton.ADD_Click({
+    $Script:BodyParameters.Remove(($BodyKeyTextBox.text).ToString())
+    $ParametersRichTextBox.Text = $Script:BodyParameters | convertto-json
+})
 $ResetValuesButton.Add_click({
     $Script:RequestHeaders = @{}
     $Script:BodyParameters = @{}
@@ -84,7 +89,7 @@ $AddKeyValuePairButton.Add_click({
     {
         if($Script:BodyParameters.count -eq 0)
         {
-            $ResponseRichTextBox.text += "Rest Parameters tend to be case sensitive please make sure to follow the documentation."
+            $ResponseRichTextBox.text += "RestAPI parameters could be case sensitive. Please make sure to follow the documentation.`n"
         }
         if($Script:BodyKeyTextBox.text)
         {
@@ -170,7 +175,7 @@ $InvokeRequestButton.Add_click({
 
 ## Adding all controls to the form and starting the form.
 $UserNameLabel, $UserNameTextBox, $PasswordLabel, $PasswordTextBox, $MethodLabel, $MethodComboBox, $BodyKeyLabel,$BodyKeyTextBox,$BodyValueLabel,$BodyValueTextBox ,$HeaderKeyLabel ,`
-$HeaderKeyTextBox ,$HeaderValueLabel,$HeaderValueTextBox, $UrlLabel ,$UrlTextBox ,$AddKeyValuePairButton ,$AddHeadersButton,$RawDataCheckBox ,$InvokeRequestButton  ,`
+$HeaderKeyTextBox ,$HeaderValueLabel,$HeaderValueTextBox, $UrlLabel ,$UrlTextBox ,$AddKeyValuePairButton ,$AddHeadersButton,$RemoveBodyParameterButton ,$InvokeRequestButton  ,`
 $ParametersRichTextBox ,$ResponseRichTextBox,$ResetValuesButton | New-CustomForm -FormHeight 800 -FormWidth 800 -FormForeColor '#0080FF'  -FormTitle "Simple RestAPI Graphical User Interface."
 <#$RawDataCheckBox, $HeaderKeyLabel, $HeaderKeyTextBox, $HeaderValueLabel, $HeaderValueTextBox, $UserNameLabel, $UserNameTextBox, $PasswordLabel, `
 $PasswordTextBox,$MethodLabel, $MethodComboBox, $ParametersRichTextBox , $UrlLabel, $UrlTextBox, $BodyKeyLabel, $BodyValueLabel, $BodyKeyTextBox, `
