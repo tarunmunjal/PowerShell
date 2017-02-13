@@ -225,7 +225,7 @@ Function Create-NewPullRequest
         $PullRequestBodyHashTable.add('body',$BodyMessage)
     }
     $PullRequestBodyJson = $PullRequestBodyHashTable | ConvertTo-Json
-    $PullRequestResponse = Invoke-RestMethod -Method Put -Uri $PullRequestQueryUrl -Headers $CreateHeaders -Body $PullRequestBodyJson
+    $PullRequestResponse = Invoke-RestMethod -Method Post -Uri $PullRequestQueryUrl -Headers $CreateHeaders -Body $PullRequestBodyJson
     return $PullRequestResponse
 }
 
@@ -273,7 +273,7 @@ Function Invoke-MergePullRequest
         $MergeParameters.Add('merge_method',$MergeMethod)
     }
     $PullRequestBodyJson = $PullRequestBodyHashTable | ConvertTo-Json
-    $PullRequestResponse = Invoke-RestMethod -Method Post -Uri $PullRequestQueryUrl -Headers $CreateHeaders -Body $PullRequestBodyJson
+    $PullRequestResponse = Invoke-RestMethod -Method put -Uri $PullRequestQueryUrl -Headers $CreateHeaders -Body $PullRequestBodyJson
     return $PullRequestResponse
 }
 
