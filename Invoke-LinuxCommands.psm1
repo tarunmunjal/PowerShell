@@ -1,4 +1,4 @@
-﻿Function Invoke-LinuxCommands
+Function Invoke-LinuxCommands
 {
 [cmdletbinding()]
     Param(
