@@ -23,7 +23,7 @@ About InvokeSimpleRestAPIGUI Script:
 
 About Invoke-LinuxCommands Script:
 ====================================
-This command requires you to have Posh-ssh installed. Once you do and you have multiple commands that you need to run in a linux system all you need to do is batch up those commands (plural) and then pass the servers (plural). All the commands you pass will be run sequentially one by one on all servers (Simultaeously). 
+This module requires you to have Posh-ssh installed. You can run multiple commands that you need to execute on a linux system from windows powershell. All you need to do is batch up those commands (plural) and then pass the servers (plural). All the commands you pass will be run sequentially one by one on all servers (Simultaeously). 
 
 If you have different commands that need to be run on different servers then I suggest you do what I did. I used this script with a csv file that has the server information and commands to be run on each server. 
 Here is an example of the command
