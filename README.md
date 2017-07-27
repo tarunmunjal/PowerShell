@@ -41,6 +41,6 @@ sudo firewall-cmd --permanent --zone=public --add-service=https
 sudo firewall-cmd --reload
 '@
 
-$Report = Invoke-LinuxCommands $servers -commands $commands -credentials $credentials
+$Report = Invoke-LinuxCommands -servers $servers -commands $commands -credentials $credentials
 
 This will give you a hash table that can be converted to Json object. Report would have server name as key and the outout of all the commands as value.
