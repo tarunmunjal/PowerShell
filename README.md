@@ -27,8 +27,11 @@ This command requires you to have Posh-ssh installed. Once you do and you have m
 
 If you have different commands that need to be run on different servers then I suggest you do what I did. I used this script with a csv file that has the server information and commands to be run on each server. 
 Here is an example of the command
+
 $Credentials = Get-Credentials
+
 $Servers = "Server1","Server2","Server3","Server4","Server5"
+
 $commands = @'
 sudo yum install epel-release
 sudo yum install nginx
@@ -37,5 +40,7 @@ sudo firewall-cmd --permanent --zone=public --add-service=http
 sudo firewall-cmd --permanent --zone=public --add-service=https
 sudo firewall-cmd --reload
 '@
+
 $Report = Invoke-LinuxCommands $servers -commands $commands -credentials $credentials
+
 This will give you a hash table that can be converted to Json object. Report would have server name as key and the outout of all the commands as value.
