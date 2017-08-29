@@ -39,7 +39,7 @@ sudo systemctl start nginx
 sudo firewall-cmd --permanent --zone=public --add-service=http 
 sudo firewall-cmd --permanent --zone=public --add-service=https
 sudo firewall-cmd --reload
-'@
+'@ -split '\r\n'
 
 $Report = Invoke-LinuxCommands -servers $servers -commands $commands -credentials $credentials
 
