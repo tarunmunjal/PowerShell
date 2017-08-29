@@ -32,14 +32,14 @@ $Credentials = Get-Credentials
 
 $Servers = "Server1","Server2","Server3","Server4","Server5"
 
-$commands = @'
-sudo yum install epel-release
-sudo yum install nginx
-sudo systemctl start nginx
-sudo firewall-cmd --permanent --zone=public --add-service=http 
-sudo firewall-cmd --permanent --zone=public --add-service=https
-sudo firewall-cmd --reload
-'@ -split '\r\n'
+$commands = @' <br />
+sudo yum install epel-release <br />
+sudo yum install nginx <br />
+sudo systemctl start nginx <br />
+sudo firewall-cmd --permanent --zone=public --add-service=http <br />
+sudo firewall-cmd --permanent --zone=public --add-service=https <br />
+sudo firewall-cmd --reload <br />
+'@ -split '\r\n' <br />
 
 $Report = Invoke-LinuxCommands -servers $servers -commands $commands -credentials $credentials
 
